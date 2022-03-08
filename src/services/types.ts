@@ -10,3 +10,11 @@ export interface UpdatePayload{
     desc: string;
     img: string;
 }
+
+export interface EditPassword{
+    password: string;
+}
+
+export interface GetProfile{
+    name: string;
+}

@@ -6,8 +6,8 @@ export interface UserDocument extends mongoose.Document {
     password: string;
     profilePicture: string;
     coverPicture: string;
-    followers: object;
-    followings: object;
+    followers: any[];
+    followings: [];
     desc: string;
     from: string;
     city: string;

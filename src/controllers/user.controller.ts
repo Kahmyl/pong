@@ -34,7 +34,7 @@ export async function createUserHandler(req:Request, res:Response) {
         );
     
         return res
-                .cookie("accessToken", accessToken,{maxAge: 1000 * 60 * 45, httpOnly: true,})
+                .cookie("accessToken", accessToken,{maxAge: 1000 * 60 * 60 * 12, httpOnly: true,})
                 .cookie("refreshToken", refreshToken,{maxAge: 1000 * 60 * 60 * 24 * 365, httpOnly: true,})
                 .send(result)
 

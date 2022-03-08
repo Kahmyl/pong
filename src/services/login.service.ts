@@ -12,13 +12,13 @@ export async function validatePassword({
     const user = await User.findOne({email: identity}) || await User.findOne({name: identity})
 
     if (!user) {
-        return false;
+        throw new Error("Email or Name does not exist");
     }
 
     const isValid = await user.comparePassword(password);
 
     if (!isValid){
-        return false;
+        throw new Error("Incorrect password");
     }
 
     return omit(user.toJSON(), "password");

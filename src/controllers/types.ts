@@ -3,3 +3,7 @@ export interface PostType{
     img: string;
     desc: string;
 }
+
+export interface PasswordBody{
+    password: string;
+}

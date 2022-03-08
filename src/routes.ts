@@ -12,6 +12,13 @@ import {
 import validateRequest from "./middleware/validateRequest";
 import { createUserSchema } from "./schema/user.schema";
 import { createLoginSchema } from "./schema/login.schema";
+import { 
+    updatePasswordHandler , 
+    getUserProfile, 
+    getUserFriend, 
+    followUser, 
+    unFollowUser
+} from "./controllers/profile.controller";
 
 export default function (app: Express) {
     app.get("/health", (req:Request, res:Response) => {
@@ -35,6 +42,16 @@ export default function (app: Express) {
     app.delete("/api/post/delete/:postId", deletePostHandler)
 
     app.put("/api/post/:postId/like", LikeHandler)
+
+    app.put("/api/user/pass/:userId", updatePasswordHandler )
+
+    app.get("/api/user/profile", getUserProfile)
+
+    app.get("/api/friend/:userId", getUserFriend )
+
+    app.put("/api/:id/follow", followUser )
+
+    app.put("/api/:id/unfollow", unFollowUser )
 
 }
 
