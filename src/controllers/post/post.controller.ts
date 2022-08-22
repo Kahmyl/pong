@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { createPost, getPosts, singlePost } from '../services/post.service'
-import { PostType } from './types';
+import { createPost, getPosts, singlePost } from '../../services/post.service'
+import { PostType } from '../types';
 
 export async function PostsHandler(req:Request, res:Response) {
     const posts = await getPosts();

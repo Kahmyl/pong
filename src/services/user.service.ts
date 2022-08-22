@@ -4,8 +4,8 @@ import User from "../models/user.model";
 import { omit } from "lodash";
 import { get } from "lodash";
 import config from "config";
-import { verifyJWT, signJWT } from "../utils/jwt.utils";
 import { UnAuthorizedErrorException } from "../common/utils/error-response";
+import { signJWT, verifyJWT } from "../common/utils/jwt.utils";
 
 export async function createUser(input: DocumentDefinition<UserDocument>) {
   try {

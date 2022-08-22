@@ -1,6 +1,6 @@
 import mongoose, { ConnectOptions } from "mongoose";
 import config from "config"
-import log from "../log"
+import log from "../../log"
 
 const connect = async () => {
     const dbURI = config.get<string>("dbURI");

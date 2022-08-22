@@ -9,5 +9,5 @@ export const successResponse = <T>({
   code?: number;
   data?: T;
 }) => {
-  return { status, message, data };
+  return { status, message, data, code };
 };
