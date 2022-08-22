@@ -1,41 +1,42 @@
-import { DocumentDefinition } from 'mongoose';
-import {UserDocument} from '../models/types'
-import User from '../models/user.model'
-import { omit } from 'lodash';
-import {get} from "lodash"
-import config from 'config'
-import { verifyJWT, signJWT } from '../utils/jwt.utils';
-// import Session from '../model/session.model'
+import { DocumentDefinition } from "mongoose";
+import { UserDocument } from "../models/types";
+import User from "../models/user.model";
+import { omit } from "lodash";
+import { get } from "lodash";
+import config from "config";
+import { verifyJWT, signJWT } from "../utils/jwt.utils";
+import { UnAuthorizedErrorException } from "../common/utils/error-response";
 
 export async function createUser(input: DocumentDefinition<UserDocument>) {
-    try{
-        return await User.create(input);
-    } catch(error: any){
-        throw new Error(error)
-    }
+  try {
+    return await User.create(input);
+  } catch (error: any) {
+    throw new Error(error);
+  }
 }
 
+export async function resetAccessToken({
+  refreshToken,
+}: {
+  refreshToken: string;
+}): Promise<any> {
+  const { decoded } = verifyJWT(refreshToken);
+  if (!decoded) {
+    throw UnAuthorizedErrorException("User is not Authorized");
+  }
 
+  const user = await User.findOne({ _id: get(decoded, "_id") });
 
-export async function resetAccessToken({refreshToken}:{refreshToken: string}): Promise<any>{
-    const { decoded } = verifyJWT(refreshToken)
-    if(!decoded){
-        return false;
-    }
+  if (!user) {
+    throw UnAuthorizedErrorException("User is not Authorized");
+  }
 
+  const result = await omit(user.toJSON(), "password");
 
-    const user = await User.findOne({_id: get(decoded, "_id")});
+  const accessToken = signJWT(
+    { ...result },
+    { expiresIn: config.get("accessTokenTl") }
+  );
 
-    if(!user){
-        return false;
-    }
-
-    const result = await omit(user.toJSON(), "password")
-
-    const accessToken = signJWT(
-        { ...result }, 
-        {expiresIn: config.get("accessTokenTl")}
-    );
-
-    return accessToken
+  return accessToken;
 }

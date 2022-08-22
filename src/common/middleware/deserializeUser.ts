@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 import {get} from "lodash"
-import { resetAccessToken } from "../services/user.service"
-import { verifyJWT } from "../utils/jwt.utils"
+import { resetAccessToken } from "../../services/user.service"
+import { verifyJWT } from "../../utils/jwt.utils"
 
 const deserializeUser = async (req: Request, res: Response, next: NextFunction) => {
     const accessToken = req.cookies.accessToken

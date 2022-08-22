@@ -1,6 +1,6 @@
 import { AnySchema } from 'yup'
 import { Request, Response, NextFunction } from 'express';
-import log from '../log';
+import log from '../../log';
 
 const validate = (schema: AnySchema) => async (req: Request, res: Response, next: NextFunction) => {
     try{

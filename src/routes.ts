@@ -1,58 +1,59 @@
-import { Express, Request, Response } from "express"
+import { Express, Request, Response, Router } from "express";
 import { createUserHandler, getAuthUser } from "./controllers/user.controller";
 import { createLoginHandler } from "./controllers/login.controller";
-import { 
-    createPostHandler, 
-    PostsHandler, 
-    SinglePostHandler, 
-    updatePostHandler,
-    deletePostHandler,
-    LikeHandler 
+import {
+  createPostHandler,
+  PostsHandler,
+  SinglePostHandler,
+  updatePostHandler,
+  deletePostHandler,
+  LikeHandler,
 } from "./controllers/post.controller";
-import validateRequest from "./middleware/validateRequest";
+import validateRequest from "./common/middleware/validateRequest";
 import { createUserSchema } from "./schema/user.schema";
 import { createLoginSchema } from "./schema/login.schema";
-import { 
-    updatePasswordHandler , 
-    getUserProfile, 
-    getUserFriend, 
-    followUser, 
-    unFollowUser
+import {
+  updatePasswordHandler,
+  getUserProfile,
+  getUserFriend,
+  followUser,
+  unFollowUser,
 } from "./controllers/profile.controller";
 
-export default function (app: Express) {
-    app.get("/health", (req:Request, res:Response) => {
-        res.sendStatus(200)
-    });
+export default function (router: Router) {
+  router.get("/health", (req: Request, res: Response) => {
+    res.status(200).send("hello");
+  });
 
-    app.get("/api/user", getAuthUser)
+  router.get("/user", getAuthUser);
 
-    app.post("/api/register", validateRequest(createUserSchema), createUserHandler)
+  router.post(
+    "/register",
+    validateRequest(createUserSchema),
+    createUserHandler
+  );
 
-    app.post("/api/login", validateRequest(createLoginSchema), createLoginHandler)
+  router.post("/login", validateRequest(createLoginSchema), createLoginHandler);
 
-    app.get("/api/posts", PostsHandler)
+  router.get("/posts", PostsHandler);
 
-    app.get("/api/post/:postId", SinglePostHandler)
+  router.get("/post/:postId", SinglePostHandler);
 
-    app.post("/api/post/create", createPostHandler)
+  router.post("/post/create", createPostHandler);
 
-    app.put("/api/post/update/:postId", updatePostHandler)
+  router.put("/post/update/:postId", updatePostHandler);
 
-    app.delete("/api/post/delete/:postId", deletePostHandler)
+  router.delete("/post/delete/:postId", deletePostHandler);
 
-    app.put("/api/post/:postId/like", LikeHandler)
+  router.put("/post/:postId/like", LikeHandler);
 
-    app.put("/api/user/pass/:userId", updatePasswordHandler )
+  router.put("/user/pass/:userId", updatePasswordHandler);
 
-    app.get("/api/user/profile", getUserProfile)
+  router.get("/user/profile", getUserProfile);
 
-    app.get("/api/friend/:userId", getUserFriend )
+  router.get("/friend/:userId", getUserFriend);
 
-    app.put("/api/:id/follow", followUser )
+  router.put("/:id/follow", followUser);
 
-    app.put("/api/:id/unfollow", unFollowUser )
-
+  router.put("/:id/unfollow", unFollowUser);
 }
-
-
