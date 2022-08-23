@@ -4,7 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/app.ts"
+    "build": "tsc -p .",
+    "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
+    "start": "node --transpile-only dist/app.js"
   },
   "dependencies": {
     "@types/cookie-parser": "^1.4.3",

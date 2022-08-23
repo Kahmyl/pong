@@ -1,21 +1,26 @@
 import { Request, Response } from "express";
-import { userProfile } from "../../services/profile.service";
-import { omit } from "lodash";
 import { UnAuthorizedErrorException } from "../../common/utils/error-response";
 import { successResponse } from "../../common/utils/response";
 import log from "../../log";
+import { createPost } from "../../services/post.service";
+import { PostType } from "../types";
 
-export async function getUserProfile(req: Request, res: Response) {
+export async function createPostHandler(req: Request, res: Response) {
   try {
+    const { img, desc }: PostType = req.body;
     const userId = res.locals.user._id;
     if (!userId) {
       throw UnAuthorizedErrorException("User is not Authorized");
     }
-    const user = await userProfile({ input: userId });
-    const result = await omit(user.toJSON(), "password");
+    const post = await createPost({
+      userId: res.locals.user._id,
+      img: img,
+      desc: desc,
+    });
+
     const response = successResponse({
-      message: "User Profile Fetched successfully",
-      data: result,
+      message: "Post Created successfully",
+      data: post,
     });
     res.send(response);
   } catch (error: any) {

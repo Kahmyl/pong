@@ -4,18 +4,7 @@ import { createUser } from "../../services/user.service";
 import config from "config";
 import log from "../../log";
 import { signJWT } from "../../common/utils/jwt.utils";
-
-export async function getAuthUser(req: Request, res: Response) {
-  if (res.locals.user && res.locals.user._id) {
-    const userId = res.locals.user._id;
-    const name = res.locals.user.name;
-    const email = res.locals.user.email;
-
-    return res.send({ userId, name, email });
-  } else {
-    return res.send("not logged in");
-  }
-}
+import { successResponse } from "../../common/utils/response";
 
 export async function createUserHandler(req: Request, res: Response) {
   try {
@@ -32,6 +21,11 @@ export async function createUserHandler(req: Request, res: Response) {
       { expiresIn: config.get("refreshTokenTl") }
     );
 
+    const response = successResponse({
+      message: "User Created Successfuly",
+      data: result,
+    });
+
     return res
       .cookie("accessToken", accessToken, {
         maxAge: 1000 * 60 * 60 * 12,
@@ -41,9 +35,13 @@ export async function createUserHandler(req: Request, res: Response) {
         maxAge: 1000 * 60 * 60 * 24 * 365,
         httpOnly: true,
       })
-      .send(result);
-  } catch (e: any) {
-    log.error(e);
-    return res.status(400).send(e.message);
+      .send(response);
+  } catch (error: any) {
+    if (error.custom) {
+      res.status(error.status);
+      log.error(error.message);
+    }
+    log.error(error);
+    res.send(error);
   }
 }

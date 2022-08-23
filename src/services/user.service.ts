@@ -4,15 +4,25 @@ import User from "../models/user.model";
 import { omit } from "lodash";
 import { get } from "lodash";
 import config from "config";
-import { UnAuthorizedErrorException } from "../common/utils/error-response";
+import {
+  ConflictErrorException,
+  UnAuthorizedErrorException,
+} from "../common/utils/error-response";
 import { signJWT, verifyJWT } from "../common/utils/jwt.utils";
 
-export async function createUser(input: DocumentDefinition<UserDocument>) {
-  try {
-    return await User.create(input);
-  } catch (error: any) {
-    throw new Error(error);
+export async function createUser(input: any) {
+  const nameExists = await User.findOne({ name: input.name });
+  const emailExists = await User.findOne({ email: input.email });
+
+  if (nameExists) {
+    throw ConflictErrorException("Username is taken");
   }
+
+  if (emailExists) {
+    throw ConflictErrorException("Email already exists");
+  }
+
+  return await User.create(input);
 }
 
 export async function resetAccessToken({

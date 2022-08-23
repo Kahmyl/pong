@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import {
   editPassword,
   userProfile,
-  getFriends,
+  getFriend,
 } from "../../services/profile.service";
 import bcrypt from "bcrypt";
 import config from "config";

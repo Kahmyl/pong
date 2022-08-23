@@ -1,12 +1,13 @@
-import mongoose from 'mongoose'
-import { PostDocument } from './types';
+import mongoose from "mongoose";
+import { PostDocument } from "./types";
 
-const Schema = mongoose.Schema
+const Schema = mongoose.Schema;
 
-const PostSchema = new Schema({
+const PostSchema = new Schema(
+  {
     userId: {
-        type: mongoose.Schema.Types.ObjectId, 
-        ref:"User"
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     desc: {
       type: String,
@@ -15,14 +16,11 @@ const PostSchema = new Schema({
     img: {
       type: String,
     },
-    likes: {
-      type: Array,
-      default: [],
-    },
+    likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
   },
-  { timestamps: true, strict: false },
+  { timestamps: true, strict: false }
 );
-    
-const Post = mongoose.model<PostDocument>("Post", PostSchema)
 
-export default Post
+const Post = mongoose.model<PostDocument>("Post", PostSchema);
+
+export default Post;

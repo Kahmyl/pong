@@ -24,18 +24,28 @@ export async function editPassword(
   return omit(updatedUser.toJSON(), "password");
 }
 
-export async function userProfile({ input }: { input?: UserDocument["name"] }) {
-  try {
-    return await User.findOne({ name: input });
-  } catch (error: any) {
-    throw new Error(error);
+export async function userProfile({ input }: { input?: UserDocument["_id"] }) {
+  const user = await User.findById({ _id: input })
+    .populate("followings", "_id, name")
+    .populate("followers", "_id, name");
+
+  if (!user) {
+    throw ServerErrorException("Something went wrong");
   }
+
+  return user;
 }
 
-export async function getFriends(userId: UserDocument["_id"]) {
+export async function getFriend(userId: UserDocument["_id"]) {
   try {
     return await User.findById(userId);
   } catch (error: any) {
     throw new Error(error);
   }
+}
+
+export async function singleFriend(userId: UserDocument["_id"]) {
+  return await User.findById(userId)
+    .populate("followings", "_id, name")
+    .populate("followers", "_id, name");
 }

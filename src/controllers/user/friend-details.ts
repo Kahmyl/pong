@@ -1,17 +1,23 @@
 import { Request, Response } from "express";
-import { userProfile } from "../../services/profile.service";
+import { singleFriend } from "../../services/profile.service";
 import { omit } from "lodash";
-import { UnAuthorizedErrorException } from "../../common/utils/error-response";
+import {
+  ServerErrorException,
+  UnAuthorizedErrorException,
+} from "../../common/utils/error-response";
 import { successResponse } from "../../common/utils/response";
 import log from "../../log";
 
-export async function getUserProfile(req: Request, res: Response) {
+export async function getFriendProfile(req: Request, res: Response) {
   try {
     const userId = res.locals.user._id;
     if (!userId) {
       throw UnAuthorizedErrorException("User is not Authorized");
     }
-    const user = await userProfile({ input: userId });
+    const user = await singleFriend(req.params.id);
+    if (!user) {
+      throw ServerErrorException("Something went wrong");
+    }
     const result = await omit(user.toJSON(), "password");
     const response = successResponse({
       message: "User Profile Fetched successfully",
