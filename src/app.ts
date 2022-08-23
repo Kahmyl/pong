@@ -12,7 +12,7 @@ dotenv.config();
 
 const app = express();
 
-const port = config.get<number>("port");
+const port = process.env.PORT ? parseInt(process.env.PORT) : 8500;
 const host = config.get<string>("host");
 
 const router = express.Router();
@@ -22,7 +22,6 @@ app.use(
     credentials: true,
   })
 );
-
 
 app.use(cookieParser());
 
