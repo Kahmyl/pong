@@ -13,7 +13,7 @@ dotenv.config();
 const app = express();
 
 const port = process.env.PORT ? parseInt(process.env.PORT) : 8500;
-const host = config.get<string>("host");
+const host = process.env.HOST ? process.env.HOST : "localhost";
 
 const router = express.Router();
 
@@ -33,7 +33,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/v1/", router);
 
-app.listen(port, host, async () => {
+app.listen(port, async () => {
   log.info(`app is listening at http://${host}:${port}`);
   await connect();
 
