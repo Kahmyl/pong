@@ -8,7 +8,7 @@ import { getFriend } from "../../services/profile.service";
 
 export async function unFollowUser(req: Request, res: Response) {
   try {
-    if (!res.locals.user._id) {
+    if (!res.locals.user) {
       throw UnAuthorizedErrorException("User is not Authorized");
     }
     const followerId = res.locals.user._id;

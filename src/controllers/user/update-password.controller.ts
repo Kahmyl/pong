@@ -11,7 +11,7 @@ import { successResponse } from "../../common/utils/response";
 import { UnAuthorizedErrorException } from "../../common/utils/error-response";
 
 export async function updatePasswordHandler(req: Request, res: Response) {
-  if (!res.locals.user._id) {
+  if (!res.locals.user) {
     throw UnAuthorizedErrorException("User not authorized");
   }
   const userId = res.locals.user._id;

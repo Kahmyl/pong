@@ -8,12 +8,12 @@ import { PostType } from "../types";
 export async function createPostHandler(req: Request, res: Response) {
   try {
     const { img, desc }: PostType = req.body;
-    const userId = res.locals.user._id;
-    if (!userId) {
+    if (!res.locals.user) {
       throw UnAuthorizedErrorException("User is not Authorized");
     }
+    const userId = res.locals.user._id;
     const post = await createPost({
-      userId: res.locals.user._id,
+      userId,
       img: img,
       desc: desc,
     });

@@ -13,10 +13,10 @@ export async function LikeHandler(req: Request, res: Response) {
     if (!postId) {
       throw BadRequestErrorException("PostId param is required");
     }
-    const userId = res.locals.user._id;
-    if (!userId) {
+    if (!res.locals.user) {
       throw UnAuthorizedErrorException("User is not Authorized");
     }
+    const userId = res.locals.user._id;
     const post = await singlePost(postId);
     if (!post.likes.includes(userId)) {
       await post.updateOne({ $push: { likes: userId } });

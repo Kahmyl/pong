@@ -27,10 +27,10 @@ export async function PostsHandler(req: Request, res: Response) {
 
 export async function UserPostsHandler(req: Request, res: Response) {
   try {
-    const userId = res.locals.user._id;
-    if (!userId) {
+    if (!res.locals.user) {
       throw UnAuthorizedErrorException("User is not Authorized");
     }
+    const userId = res.locals.user._id;
     const posts = await getUserPosts(userId);
     const response = successResponse({
       message: "Posts Fetched successfully",

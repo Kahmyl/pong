@@ -10,8 +10,7 @@ import log from "../../log";
 
 export async function getFriendProfile(req: Request, res: Response) {
   try {
-    const userId = res.locals.user._id;
-    if (!userId) {
+    if (!res.locals.user) {
       throw UnAuthorizedErrorException("User is not Authorized");
     }
     const user = await singleFriend(req.params.id);

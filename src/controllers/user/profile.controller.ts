@@ -7,10 +7,10 @@ import log from "../../log";
 
 export async function getUserProfile(req: Request, res: Response) {
   try {
-    const userId = res.locals.user._id;
-    if (!userId) {
+    if (!res.locals.user) {
       throw UnAuthorizedErrorException("User is not Authorized");
     }
+    const userId = res.locals.user._id;
     const user = await userProfile({ input: userId });
     const result = await omit(user.toJSON(), "password");
     const response = successResponse({
@@ -21,9 +21,8 @@ export async function getUserProfile(req: Request, res: Response) {
   } catch (error: any) {
     if (error.custom) {
       res.status(error.status);
-      log.error(error.message);
     }
-    log.error(error);
+    log.error(error.message);
     res.send(error);
   }
 }
