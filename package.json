@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
-    "start": "node ./build/src/app.js",
+    "start": "set NODE_ENV=production && node ./build/src/app.js",
     "tsc": "echo \"Building...\" && tsc",
     "format": "prettier --write src/**/*.*",
     "clean": "echo \"pruning build folder...\" && rm -rf build/",
