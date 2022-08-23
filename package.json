@@ -4,9 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "tsc -p .",
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
-    "start": "node build/src/app.js"
+    "start": "node ./build/app.js",
+    "tsc": "echo \"Building...\" && tsc",
+    "format": "prettier --write src/**/*.*",
+    "clean": "echo \"pruning build folder...\" && rm -rf build/",
+    "test": "mocha -r ts-node/register src/tests/**/*tests.ts",
+    "build": "yarn clean && yarn run tsc"
   },
   "dependencies": {
     "@types/cookie-parser": "^1.4.3",
