@@ -6,6 +6,7 @@ import { createLoginHandler } from "../controllers/user/login.controller";
 import { getUserProfile } from "../controllers/user/profile.controller";
 import { unFollowUser } from "../controllers/user/unfollow-friend.controller";
 import { updatePasswordHandler } from "../controllers/user/update-password.controller";
+import { getUserWithPostHandler } from "../controllers/user/user-posts.controller";
 import { createUserHandler } from "../controllers/user/user.controller";
 import { createLoginSchema } from "../schema/login.schema";
 import { updatePasswordSchema } from "../schema/password.schema";
@@ -30,6 +31,8 @@ userRoute.put(
 );
 
 userRoute.get("/profile", getUserProfile);
+
+userRoute.get("/user-posts", getUserWithPostHandler);
 
 userRoute.get("/friend/:id/profile", getFriendProfile);
 

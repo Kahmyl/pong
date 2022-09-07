@@ -25,9 +25,17 @@ export async function editPassword(
 }
 
 export async function userProfile({ input }: { input?: UserDocument["_id"] }) {
-  const user = await User.findById({ _id: input })
-    .populate("followings", "_id, name")
-    .populate("followers", "_id, name");
+  const user = await User.findById({ _id: input });
+
+  if (!user) {
+    throw ServerErrorException("Something went wrong");
+  }
+
+  return user;
+}
+
+export async function userPosts({ input }: { input?: UserDocument["_id"] }) {
+  const user = await User.findById({ _id: input }).populate('posts');
 
   if (!user) {
     throw ServerErrorException("Something went wrong");

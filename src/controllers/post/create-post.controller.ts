@@ -3,6 +3,7 @@ import { UnAuthorizedErrorException } from "../../common/utils/error-response";
 import { successResponse } from "../../common/utils/response";
 import log from "../../log";
 import { createPost } from "../../services/post.service";
+import { getFriend } from "../../services/profile.service";
 import { PostType } from "../types";
 
 export async function createPostHandler(req: Request, res: Response) {
@@ -17,6 +18,9 @@ export async function createPostHandler(req: Request, res: Response) {
       img: img,
       desc: desc,
     });
+    const currentUser = await getFriend(userId);
+    currentUser &&
+      (await currentUser.updateOne({ $push: { posts: post._id } }));
 
     const response = successResponse({
       message: "Post Created successfully",
