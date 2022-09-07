@@ -35,7 +35,7 @@ export async function userProfile({ input }: { input?: UserDocument["_id"] }) {
 }
 
 export async function userPosts({ input }: { input?: UserDocument["_id"] }) {
-  const user = await User.findById({ _id: input }).populate('posts');
+  const user = await User.findById({ _id: input }).populate("posts");
 
   if (!user) {
     throw ServerErrorException("Something went wrong");
@@ -53,7 +53,5 @@ export async function getFriend(userId: UserDocument["_id"]) {
 }
 
 export async function singleFriend(userId: UserDocument["_id"]) {
-  return await User.findById(userId)
-    .populate("followings", "_id, name")
-    .populate("followers", "_id, name");
+  return await User.findById(userId).populate("posts");
 }
