@@ -2,7 +2,10 @@ import express from "express";
 import validateRequest from "../common/middleware/validateRequest";
 import { followUser } from "../controllers/user/follow-friend.controller";
 import { getFriendProfile } from "../controllers/user/friend-details";
-import { createLoginHandler } from "../controllers/user/login.controller";
+import {
+  createLoginHandler,
+  logoutHandler,
+} from "../controllers/user/login.controller";
 import { getUserProfile } from "../controllers/user/profile.controller";
 import { unFollowUser } from "../controllers/user/unfollow-friend.controller";
 import { updatePasswordHandler } from "../controllers/user/update-password.controller";
@@ -24,6 +27,9 @@ userRoute.post(
   validateRequest(createUserSchema),
   createUserHandler
 );
+
+userRoute.post("/logout", logoutHandler);
+
 userRoute.put(
   "/pass",
   validateRequest(updatePasswordSchema),

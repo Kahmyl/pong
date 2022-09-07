@@ -43,3 +43,22 @@ export async function createLoginHandler(req: Request, res: Response) {
     res.send(error);
   }
 }
+
+export async function logoutHandler(req: Request, res: Response) {
+  try {
+    const response = successResponse({
+      message: "You are now Logged out",
+    });
+    return res
+      .clearCookie("accessToken")
+      .clearCookie("refreshToken")
+      .send(response);
+  } catch (error: any) {
+    if (error.custom) {
+      res.status(error.status);
+      log.error(error.message);
+    }
+    log.error(error);
+    res.send(error);
+  }
+}
