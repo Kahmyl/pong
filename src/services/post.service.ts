@@ -10,7 +10,7 @@ export async function getPosts() {
 
 export async function getUserPosts(userId: UserDocument["_id"]) {
   return await Post.find({ userId })
-    .populate("userId", ["name", "id"])
+    .populate("userId")
     .populate("likes", ["name", "id"]);
 }
 

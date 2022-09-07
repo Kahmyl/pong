@@ -11,11 +11,14 @@ const deserializeUser = async (
   const accessToken = req.cookies.accessToken;
   const refreshToken = req.cookies.refreshToken;
 
+
   if (!accessToken) {
     return next();
   }
 
   const { decoded, expired } = verifyJWT(accessToken);
+
+  console.log(expired)
 
   if (decoded) {
     res.locals.user = decoded;
